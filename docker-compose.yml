@@ -1,0 +1,45 @@
+version: "3"
+
+
+services:
+    web:
+        image: nginx:alpine
+        ports:
+            - "8024:80"
+        volumes:
+            - ./app/public:/app/public
+            - ./docker/config:/etc/nginx/conf.d
+        depends_on: 
+            - php
+            - postgres
+
+    php:
+        build: ./docker/build/php
+        volumes:
+            - ./docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./app/public:/app/public
+    
+    postgres:
+        image: postgres:latest
+        environment:
+            POSTGRES_USER: $POSTGRES_USR
+            POSTGRES_PASSWORD: $POSTGRES_PWD
+        volumes:
+            - postgres:/data/postgres
+        
+        
+    pgadmin:
+        image: dpage/pgadmin4
+        ports: 
+            - "5050:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: $PGADMIN_DEFAULT_USR
+            PGADMIN_DEFAULT_PASSWORD: $PGADMIN_DEFAULT_PWD
+        volumes: 
+            - pgadmin:/root/.pgadmin
+        
+
+volumes:
+    postgres:
+    pgadmin:
