@@ -1,0 +1,5 @@
+network.host: localhost
+
+xpack.license.self_generated.type: trial
+xpack.security.enabled: true
+xpack.monitoring.collection.enabled: true

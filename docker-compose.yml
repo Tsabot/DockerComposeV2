@@ -38,7 +38,13 @@ services:
             PGADMIN_DEFAULT_PASSWORD: $PGADMIN_DEFAULT_PWD
         volumes: 
             - pgadmin:/root/.pgadmin
-        
+    
+    elasticsearch:
+        build: ./docker/build/elasticsearch
+        volumes: 
+            - ./docker/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+        depends_on:
+            - web
 
 volumes:
     postgres:
